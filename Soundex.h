@@ -20,13 +20,29 @@ char getSoundexCode(char c) {
 
 void generateSoundex(const char *name, char *soundex) {
     int len = strlen(name);
+    int temp;
+    if (len == 0) {
+        strcpy(soundex, "0000");
+        return;
+    }
     soundex[0] = toupper(name[0]);
     int sIndex = 1;
 
+    char lastDigit = getSoundexCode(name[0]);
     for (int i = 1; i < len && sIndex < 4; i++) {
         char code = getSoundexCode(name[i]);
-        if (code != '0' && code != soundex[sIndex - 1]) {
+        if (!(strchr("aeiou", word[i-1]))){
+            temp = 0;
+        }
+        if (strchr("aeiou", word[i])){
+            temp = 1;
+        }
+        if (strchr("hw", word[i])){
+            continue;
+        }
+        if ((code != '0' && code != soundex[sIndex - 1]) || (code != '0' && lastDigit == code && temp)) {
             soundex[sIndex++] = code;
+            lastDigit = code;
         }
     }
 
