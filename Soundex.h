@@ -31,13 +31,13 @@ void generateSoundex(const char *name, char *soundex) {
     char lastDigit = getSoundexCode(name[0]);
     for (int i = 1; i < len && sIndex < 4; i++) {
         char code = getSoundexCode(name[i]);
-        if (!(strchr("aeiou", word[i-1]))){
+        if (!(strchr("aeiou", name[i-1]))){
             temp = 0;
         }
-        if (strchr("aeiou", word[i])){
+        if (strchr("aeiou", name[i])){
             temp = 1;
         }
-        if (strchr("hw", word[i])){
+        if (strchr("hw", name[i])){
             continue;
         }
         if ((code != '0' && code != soundex[sIndex - 1]) || (code != '0' && lastDigit == code && temp)) {
