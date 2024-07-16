@@ -36,7 +36,9 @@ void generateSoundex(const char *name, char *soundex) {
         char code = getSoundexCode(name[i]);
         sIndex = modifySoundex(code, sIndex, soundex);
     }
-    memset(soundex + sIndex, '0', 4 - sIndex);
+    while (sIndex <= 3) {
+        soundex[sIndex++] = '0';
+    }
     soundex[4] = '\0';
 }
 
