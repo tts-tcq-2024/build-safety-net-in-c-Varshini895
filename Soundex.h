@@ -31,11 +31,11 @@ void generateSoundex(const char *name, char *soundex) {
     soundex[0] = toupper(name[0]);
     int sIndex = 1;
 
-    for (int i = 1, len = strlen(name); i < len && sIndex <= 3; i++) {
+    for (int i = 1, name[i] != '\0' && sIndex <=3; i++) {
         char code = getSoundexCode(name[i]);
         sIndex = modifySoundex(code, sIndex, soundex);
     }
-    while (sIndex < 4) {
+    while (sIndex <= 3) {
         soundex[sIndex++] = '0';
     }
     soundex[4] = '\0';
