@@ -19,7 +19,8 @@ char getSoundexCode(char c) {
 }
 
 int modifySoundex(char code, int currentIndex, char *soundex) {
-    if (code != '0') {
+    int notZero = code != '0';
+    if (notZero) {
         soundex[currentIndex] = code;
         return ++currentIndex;
     }
