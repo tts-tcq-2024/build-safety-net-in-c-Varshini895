@@ -39,15 +39,14 @@ void modifyCode(char *soundex, int *sIndex, char code) {
 }
 
 void generateSoundex(const char *name, char *soundex) {
+    int len = strlen(name);
     soundex[0] = toupper(name[0]);
     int sIndex = 1;
 
     for (int i = 1; i < len && sIndex < 4; i++) {
         modifyCode(soundex, &sIndex, getSoundexCode(name[i]));
     }
-    while (sIndex <= 3) {
-        soundex[sIndex++] = '0';
-    }
+    memset(soundex + sIndex, '0', 4 - sIndex);
     soundex[4] = '\0';
 }
 
