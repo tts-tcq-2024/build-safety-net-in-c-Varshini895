@@ -1,40 +1,50 @@
 #ifndef SOUNDEX_H
 #define SOUNDEX_H
 
-#include "Soundex.h"
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
 
-char getSoundexCode(char c) {
-    c = toupper(c);
-    switch (c) {
-        case 'B': case 'F': case 'P': case 'V': return '1';
-        case 'C': case 'G': case 'J': case 'K': case 'Q': case 'S': case 'X': case 'Z': return '2';
-        case 'D': case 'T': return '3';
-        case 'L': return '4';
-        case 'M': case 'N': return '5';
-        case 'R': return '6';
-        default: return '0'; // For A, E, I, O, U, H, W, Y
+
+char getSoundexCode(char l) {
+    static const char codeTable[26] = {
+        '0', '1', '2', '3', '0', '1', '2', '0', '0', // A-I
+        '2', '2', '4', '5', '5', '0', '1', '2', '6', // J-R
+        '2', '3', '0', '1', '0', '2', '0', '2'       // S-Z
+    };
+   char L = toupper(l);
+    if (isalpha(L)) {
+        return codeTable[L - 'A'];
+    }
+    return '0';
+}
+ 
+// Function to check if the code can be appended to the Soundex string
+int canAppendCode(char *soundex, int sIndex, char code) {
+    return sIndex < 4 && code != '0' && code != soundex[sIndex - 1];
+}
+ 
+// Function to modify the Soundex string by appending the code if allowed
+void modifyCode(char *soundex, int *sIndex, char code) {
+    if (canAppendCode(soundex, *sIndex, code)) {
+        soundex[(*sIndex)++] = code;
     }
 }
-
+ 
+// Function to generate the Soundex code for a given name
 void generateSoundex(const char *name, char *soundex) {
-    int len = strlen(name);
-    soundex[0] = toupper(name[0]);
+    int length = strlen(name);
+    soundex[0] = toupper(name[0]); // First letter of the name
     int sIndex = 1;
-
-    for (int i = 1; i < len && sIndex < 4; i++) {
+ 
+    // Iterate through the name to generate the Soundex code
+    for (int i = 1; i < length && sIndex < 4; i++) {
         char code = getSoundexCode(name[i]);
-        if (code != '0' && code != soundex[sIndex - 1]) {
-            soundex[sIndex++] = code;
-        }
+        modifyCode(soundex, &sIndex, code);
     }
-
-    while (sIndex < 4) {
-        soundex[sIndex++] = '0';
-    }
-
-    soundex[4] = '\0';
+    // Pad the Soundex code with '0's if it's less than 4 characters long
+    memset(soundex + sIndex, '0', 4 - sIndex);
+    soundex[4] = '\0'; // Null-terminate the string
 }
 
 #endif // SOUNDEX_H
