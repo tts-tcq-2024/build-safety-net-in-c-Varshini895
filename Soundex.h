@@ -12,7 +12,7 @@ char getSoundexCode(char l) {
         '2', '2', '4', '5', '5', '0', '1', '2', '6', // J-R
         '2', '3', '0', '1', '0', '2', '0', '2'       // S-Z
     };
-    L = toupper(l);
+   char L = toupper(l);
     if (isalpha(L)) {
         return codeTable[L - 'A'];
     }
